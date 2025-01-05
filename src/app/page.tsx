@@ -1,4 +1,3 @@
-//import { Navbar } from './components/navbar'
 import { NavbarDemo } from './components/navbar'
 import { Hero } from './components/hero'
 import { GridBackground } from './components/grid-background'
@@ -19,4 +18,3 @@ export default function Home() {
     </main>
   )
 }
-

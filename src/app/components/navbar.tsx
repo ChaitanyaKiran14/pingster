@@ -1,9 +1,9 @@
 "use client";
-
 import React, { useState } from "react";
 import Link from "next/link";
 import { Instagram } from "lucide-react";
 import { cn } from "../lib/utils";
+import { SignInButton } from "@clerk/nextjs";
 
 export function NavbarDemo() {
   return (
@@ -54,6 +54,8 @@ export function NavbarDemo() {
             </div>
 
             {/* GitHub Button */}
+           
+            
             <Link
               href="#github"
               className="flex items-center space-x-2 px-4 py-2 border border-gray-600 rounded-xl text-base font-medium text-gray-200 hover:bg-gray-700/50 hover:text-white transition-colors"
@@ -74,6 +76,9 @@ export function NavbarDemo() {
                 />
               </svg>
             </Link>
+
+
+            <SignInButton mode="modal"/>
           </div>
         </nav>
       </div>
