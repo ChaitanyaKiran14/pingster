@@ -1,12 +1,15 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 //we can pass as many routes as we wan in the array
-const isRouteProteced = createRouteMatcher([])
+const isProtectedRoute = createRouteMatcher([
+  '/dashboard(.*)',
+  '/api/payment(.*)',
+  '/callback(.*)',
+])
 
 export default clerkMiddleware(async (auth, req) => {
-    if(isRouteProteced(req)) await auth.protect()
-
-});
+  if (isProtectedRoute(req)) await auth.protect()
+})
 
 export const config = {
   matcher: [

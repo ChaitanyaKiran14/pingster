@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Instagram } from "lucide-react";
 import { cn } from "../lib/utils";
 import { SignInButton } from "@clerk/nextjs";
+import { features } from "process";
 
 export function NavbarDemo() {
   return (
@@ -40,20 +41,20 @@ export function NavbarDemo() {
                 Use Cases
               </Link>
               <Link
-                href="#features"
+                href={'/features'}
                 className="text-base font-medium text-gray-200 hover:text-white transition-colors"
               >
                 Features
               </Link>
               <Link
-                href="#team"
+                href={'/team'}
                 className="text-base font-medium text-gray-200 hover:text-white transition-colors"
               >
                 Team
               </Link>
             </div>
 
-            {/* GitHub Button */}
+
            
             
             <Link

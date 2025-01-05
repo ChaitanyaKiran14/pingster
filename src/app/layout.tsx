@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { ThemeProvider } from "../providers/theme-provider";
+import { Toaster } from 'sonner'
 import "./globals.css";
 import {
   ClerkProvider
@@ -21,7 +23,16 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-          <body className={inter.className}>{children}</body>
+      <body  suppressHydrationWarning  className={inter.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            disableTransitionOnChange
+          >
+             {children}
+             <Toaster/>
+          </ThemeProvider>
+        </body>
       </html>
     </ClerkProvider>
    
