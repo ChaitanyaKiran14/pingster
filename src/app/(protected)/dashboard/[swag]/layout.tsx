@@ -24,7 +24,6 @@ export default Layout;
 
 
 
-
 //accessing dynamic route parameters :
 
 // const Products = async ({params} : {params : {id: string}}) => {
