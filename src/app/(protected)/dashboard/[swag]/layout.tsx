@@ -15,7 +15,6 @@ const Layout = ({ children, params }: Props) => {
 
   return (
     <div>
-      
      <SidebarDemo/>
     </div>
   );

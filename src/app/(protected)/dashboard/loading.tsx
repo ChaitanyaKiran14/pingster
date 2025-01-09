@@ -13,7 +13,7 @@ type Props = {
 
 const Loading = (props: Props) => {
   return (
-    <div className='flex h-screen justify-center items-center'>
+    <div>
 
     <Loader state>Loading...</Loader>
 
