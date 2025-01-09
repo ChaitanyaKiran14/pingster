@@ -15,7 +15,7 @@ const Layout = ({ children, params }: Props) => {
 
   return (
     <div>
-     <SidebarDemo/>
+     <SidebarDemo swag ={params.swag}/>
     </div>
   );
 };

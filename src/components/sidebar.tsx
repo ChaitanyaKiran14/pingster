@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import {Sidebar, SidebarBody,SidebarLink } from "./global/sidebar";
 import {
-  
   IconArrowLeft,
   IconBrandTabler,
   IconSettings,
@@ -14,11 +13,27 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { v4 as uuid } from 'uuid'
 
-export function SidebarDemo() {
+export type FieldProps = {
+  label: string
+  id: string
+  page:string
+}
+
+
+type SidebarDemoProps = {
+  swag: string; 
+  ty=
+};
+
+export function SidebarDemo({ swag }: SidebarDemoProps) {
+
+
   const links = [
     {
       label: "Dashboard",
+      id: uuid(),
       href: "#",
       icon: (
         <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
@@ -27,6 +42,7 @@ export function SidebarDemo() {
     {
       label: "Automations",
       href: "#",
+      id: uuid(),
       icon: (
         <IconAutomaticGearboxFilled className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -35,6 +51,7 @@ export function SidebarDemo() {
     {
         label: "Integrations",
         href: "#",
+        id: uuid(),
         icon: (
           <IconBlendMode className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
         ),
@@ -45,6 +62,7 @@ export function SidebarDemo() {
     {
       label: "Settings",
       href: "#",
+      id: uuid(),
       icon: (
         <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
@@ -52,11 +70,15 @@ export function SidebarDemo() {
     {
       label: "Logout",
       href: "#",
+      id: uuid(),
       icon: (
         <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
       ),
     },
   ];
+
+
+
   const [open, setOpen] = useState(false);
   return (
     <div
