@@ -24,7 +24,7 @@ export type FieldProps = {
 
 type SidebarDemoProps = {
   swag: string; 
-  ty=
+  
 };
 
 export function SidebarDemo({ swag }: SidebarDemoProps) {
