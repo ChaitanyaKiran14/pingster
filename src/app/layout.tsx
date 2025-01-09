@@ -6,9 +6,10 @@ import "./globals.css";
 import {
   ClerkProvider
 } from '@clerk/nextjs'
+import Page from "./(protected)/dashboard/page";
 
 const inter = Inter({ subsets: ["latin"] });
-console.log("Publishable Key:", process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY);
+
 
 export const metadata: Metadata = {
   title: "Create Next App",

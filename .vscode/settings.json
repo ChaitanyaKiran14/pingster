@@ -1,0 +1,16 @@
+{
+  "editor.formatOnType": false,
+  "editor.formatOnSave": false,
+  "editor.formatOnPaste": false,
+  "editor.defaultFormatter": "Prisma.prisma",
+  "workbench.editor.mouseBackForwardToNavigate": false,
+  "testing.saveBeforeTest": true,
+  "spellright.language": [
+    "en"
+  ],
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext"
+  ],
+}
