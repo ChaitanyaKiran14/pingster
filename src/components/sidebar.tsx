@@ -1,42 +1,36 @@
 "use client";
 import React, { useState } from "react";
-import {Sidebar, SidebarBody,SidebarLink } from "./global/sidebar";
+import { useUser } from '@clerk/clerk-react';
+import { Sidebar, SidebarBody, SidebarLink } from "./global/sidebar";
 import {
   IconArrowLeft,
   IconBrandTabler,
   IconSettings,
-  IconUserBolt,
   IconAutomaticGearboxFilled,
   IconBlendMode
 } from "@tabler/icons-react";
+import { User } from "lucide-react";
+import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import { v4 as uuid } from 'uuid'
-
-export type FieldProps = {
-  label: string
-  id: string
-  page:string
-}
-
+import { v4 as uuid } from 'uuid';
+import { usePaths } from "@/hooks/user-nav";
 
 type SidebarDemoProps = {
-  swag: string; 
-  
+  swag: string;
+  page: string;
 };
 
-export function SidebarDemo({ swag }: SidebarDemoProps) {
-
-
+export function SidebarDemo({ swag, page }: SidebarDemoProps) {
   const links = [
     {
       label: "Dashboard",
       id: uuid(),
       href: "#",
       icon: (
-        <IconBrandTabler className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconBrandTabler className="h-5 w-5 flex-shrink-0" />
       ),
     },
     {
@@ -44,27 +38,23 @@ export function SidebarDemo({ swag }: SidebarDemoProps) {
       href: "#",
       id: uuid(),
       icon: (
-        <IconAutomaticGearboxFilled className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconAutomaticGearboxFilled className="h-5 w-5 flex-shrink-0" />
       ),
     },
-
     {
-        label: "Integrations",
-        href: "#",
-        id: uuid(),
-        icon: (
-          <IconBlendMode className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
-        ),
-      },
-
-
-
+      label: "Integrations",
+      href: "#",
+      id: uuid(),
+      icon: (
+        <IconBlendMode className="h-5 w-5 flex-shrink-0" />
+      ),
+    },
     {
       label: "Settings",
       href: "#",
       id: uuid(),
       icon: (
-        <IconSettings className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconSettings className="h-5 w-5 flex-shrink-0" />
       ),
     },
     {
@@ -72,82 +62,125 @@ export function SidebarDemo({ swag }: SidebarDemoProps) {
       href: "#",
       id: uuid(),
       icon: (
-        <IconArrowLeft className="text-neutral-700 dark:text-neutral-200 h-5 w-5 flex-shrink-0" />
+        <IconArrowLeft className="h-5 w-5 flex-shrink-0" />
       ),
     },
   ];
 
-
-
   const [open, setOpen] = useState(false);
+  const { user } = useUser();
+
+  const UserProfile = () => (
+    <div className="flex flex-col gap-2 px-2">
+      <div className="flex items-center gap-3 p-2 rounded-xl bg-gradient-to-r from-neutral-900/50 to-neutral-800/50 backdrop-blur-sm">
+        <UserButton>
+          <UserButton.UserProfileLink 
+            label="Dashboard"
+            url="/dashboard"
+            labelIcon={<User size={16} />}
+          />
+        </UserButton>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col"
+          >
+            <span className="text-sm font-medium text-white">
+              {user?.firstName && user?.lastName 
+                ? `${user.firstName} ${user.lastName}`
+                : user?.username 
+                  ? user.username
+                  : user?.emailAddresses[0]?.emailAddress?.split('@')[0] 
+                    || 'User'}
+            </span>
+            <span className="text-xs text-neutral-400">View Profile</span>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
-    <div
-      className={cn(
-        "rounded-md flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800 w-full flex-1  mx-auto border border-neutral-200 dark:border-neutral-700 overflow-hidden",
-        "h-screen"
-      )}
-    >
+    <div className="h-screen flex">
       <Sidebar open={open} setOpen={setOpen}>
-        <SidebarBody className="justify-between gap-10">
-          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-            {open ? <Logo /> : <LogoIcon />}
-            <div className="mt-8 flex flex-col gap-2 hover:text-pink-500">
-              {links.map((link, idx) => (
-                <SidebarLink  key={idx} link={link} />
-              ))}
+        <SidebarBody className="bg-gradient-to-b from-neutral-900 to-neutral-950 border-r border-neutral-800 justify-between gap-10 py-6">
+          <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden px-4">
+            <div className="flex items-center gap-2 px-2">
+              {open ? <Logo /> : <LogoIcon />}
             </div>
+            <nav className="mt-8 flex flex-col gap-2">
+              {links.map((link) => {
+                const isActive =
+                  page === link.label || (page === swag && link.label === 'home');
+
+                return (
+                  <Link
+                    key={link.id}
+                    href={`/dashboard/${swag}/${link.label === 'home' ? '/' : link.label}`}
+                    className={cn(
+                      'flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-150',
+                      'hover:bg-neutral-800/50 hover:backdrop-blur-sm group/sidebar',
+                      isActive ? 'bg-gradient-to-r from-pink-500/20 to-purple-500/20 text-white' : 'text-neutral-400'
+                    )}
+                  >
+                    <div className={cn(
+                      'transition-colors duration-150',
+                      isActive ? 'text-white' : 'text-neutral-400 group-hover/sidebar:text-white'
+                    )}>
+                      {link.icon}
+                    </div>
+                    {open && (
+                      <motion.span
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className={cn(
+                          'text-sm font-medium transition-transform duration-150 group-hover/sidebar:translate-x-1',
+                          isActive ? 'text-white' : 'text-neutral-400 group-hover/sidebar:text-white'
+                        )}
+                      >
+                        {link.label}
+                      </motion.span>
+                    )}
+                  </Link>
+                );
+              })}
+            </nav>
           </div>
-          <div>
-            <SidebarLink
-              link={{
-                label: "Chaitu Stark",
-                href: "#",
-                icon: (
-                  <Image
-                    src="https://assets.aceternity.com/manu.png"
-                    className="h-7 w-7 flex-shrink-0 rounded-full"
-                    width={50}
-                    height={50}
-                    alt="Avatar"
-                  />
-                ),
-              }}
-            />
-          </div>
+          <UserProfile />
         </SidebarBody>
       </Sidebar>
       <Dashboard />
     </div>
   );
 }
+
 export const Logo = () => {
   return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+    <Link href="#" className="flex items-center gap-3 mr-4">
+      <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center">
+        <span className="font-bold text-white">P</span>
+      </div>
       <motion.span
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="font-medium text-black dark:text-white whitespace-pre"
+        className="font-semibold text-white"
       >
         Pingster
       </motion.span>
     </Link>
   );
 };
+
 export const LogoIcon = () => {
   return (
-    <Link
-      href="#"
-      className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20"
-    >
-      <div className="h-5 w-6 bg-black dark:bg-white rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+    <Link href="#" className="block mr-4">
+      <div className="h-8 w-8 rounded-xl bg-gradient-to-br from-pink-500 to-purple-600 flex items-center justify-center">
+        <span className="font-bold text-white">P</span>
+      </div>
     </Link>
   );
 };
-
 
 const Dashboard = () => {
     return (
